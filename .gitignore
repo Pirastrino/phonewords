@@ -1,0 +1,4 @@
+.DS_Store
+yarn-error.*
+dist/
+node_modules/
