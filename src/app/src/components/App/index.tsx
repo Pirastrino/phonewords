@@ -1,12 +1,15 @@
 import React, { FC } from 'react';
 
 import { Layout } from '../Layout';
+import { Keyboard } from '../Keyboard';
 
 const App: FC = () => (
   <Layout>
     {/* <Helmet /> */}
     {/* <AppRouter/> */}
-    <div>Hello World!</div>
+    {/* <Display /> */}
+    {/* <Suggestion /> */}
+    <Keyboard />
   </Layout>
 );
 
