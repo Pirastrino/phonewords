@@ -1,10 +1,5 @@
 import React, { FC, ChangeEvent, useState } from 'react';
-import {
-  makeStyles,
-  createStyles,
-  Theme,
-  withStyles,
-} from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 
