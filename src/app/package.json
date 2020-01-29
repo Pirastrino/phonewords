@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "webpack --env.mode development --watch"
+    "dev": "webpack-dev-server --env.mode development"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.0",
