@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import { Layout } from '../Layout';
-import { Display } from '../Display';
-import { Header } from '../Header';
-import { Keypad } from '../Keypad';
-import { SuggestionBar } from '../SuggestionBar';
+import { Layout } from '../Layout/Layout';
+import { Display } from '../Display/Display';
+import { Header } from '../Header/Header';
+import { Keypad } from '../Keypad/Keypad';
+import { SuggestionBar } from '../SuggestionBar/SuggestionBar';
 
 const App: FC = () => {
   const styles = makeStyles((theme: Theme) =>

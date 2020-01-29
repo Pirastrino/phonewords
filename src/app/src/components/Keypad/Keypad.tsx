@@ -2,10 +2,11 @@ import React, { FC, Fragment } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import BackspaceOutlined from '@material-ui/icons/BackspaceOutlined';
+
+import { useStore } from '../../hooks/useStore';
 
 interface Buttons {
   [index: string]: string[];
@@ -23,17 +24,18 @@ const buttons: Buttons = {
 };
 
 const Keypad: FC = () => {
+  const { addValue } = useStore();
+
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
         backgroundColor: 'whitesmoke',
       },
       box: {
-        width: '33.3333%',
-        height: 70,
+        // height: '10vh',
       },
       button: {
-        width: '100%',
+        width: '33.33%',
         height: '100%',
         borderRadius: 0,
         boxShadow: 'none',
@@ -45,32 +47,33 @@ const Keypad: FC = () => {
     <Box display="flex" flexWrap="wrap" justifyContent="center">
       {['1', '2', '3', '4', '5', '6', '7', '8', '9', 'caps', '0', 'bcsp'].map(
         (key: string) => (
-          <Box className={styles.box}>
-            <Button
-              className={styles.button}
-              key={key}
-              variant="text"
-              color="primary"
+          // <Box key={key + 'a'} className={styles.box}>
+          <Button
+            className={styles.button}
+            key={key}
+            variant="text"
+            color="primary"
+            onClick={e => addValue(e, key)}
+          >
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
             >
-              <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                {key == 'caps' ? (
-                  <ArrowUpward />
-                ) : key == 'bcsp' ? (
-                  <BackspaceOutlined />
-                ) : (
-                  <Fragment>
-                    <Typography variant="h4">{key}</Typography>
-                    <Typography>{buttons[key]}</Typography>
-                  </Fragment>
-                )}
-              </Box>
-            </Button>
-          </Box>
+              {key == 'caps' ? (
+                <ArrowUpward />
+              ) : key == 'bcsp' ? (
+                <BackspaceOutlined />
+              ) : (
+                <Fragment>
+                  <Typography variant="h4">{key}</Typography>
+                  <Typography>{buttons[key]}</Typography>
+                </Fragment>
+              )}
+            </Box>
+          </Button>
+          // </Box>
         )
       )}
     </Box>
