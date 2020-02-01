@@ -1,12 +1,10 @@
-import React from 'react'; // { useEffect, useState }
+import React from 'react';
 import Box from '@material-ui/core/Box';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
-import { useStore } from '../../hooks/useStore';
+import { useKeyboard } from '../../hooks/useKeyboard';
 
 const Display = () => {
-  const { input } = useStore();
-
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
@@ -16,9 +14,11 @@ const Display = () => {
     })
   )();
 
+  const { type } = useKeyboard();
+
   return (
     <Box p={2} className={styles.root}>
-      {input}
+      {type}
     </Box>
   );
 };

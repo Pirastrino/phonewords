@@ -13,6 +13,7 @@ const SuggestionBar: FC = () => {
       root: {
         flexGrow: 1,
         width: '100%',
+        // height: '4rem',
         backgroundColor: theme.palette.background.paper,
       },
       tabs: {
