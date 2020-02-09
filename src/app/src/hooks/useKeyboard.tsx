@@ -1,8 +1,13 @@
 import create from 'zustand';
 
-const [useKeyboard] = create(set => ({
+type Keyboard = {
+  numpad: Boolean;
+  switchType: () => void;
+};
+
+const [useKeyboard] = create<Keyboard>(set => ({
   numpad: false,
-  switchType: (e: MouseEvent) => set(state => ({ numpad: !state.numpad })),
+  switchType: () => set(state => ({ numpad: !state.numpad })),
 }));
 
 export { useKeyboard };

@@ -6,50 +6,48 @@ import SpaceBarIcon from '@material-ui/icons/SpaceBar';
 import KeyboardCapslockIcon from '@material-ui/icons/KeyboardCapslock';
 
 import { useKeyboard } from '../../../hooks/useKeyboard';
+import { useMessage } from '../../../hooks/useMessage';
 
 interface Button {
-  body: string | string[] | JSX.Element;
-  handleClick?: ((e: MouseEvent) => void) | undefined;
+  body: string | JSX.Element;
+  handleClick?: ((e: MouseEvent) => void) | (() => void) | undefined;
 }
 
 const MainPanel: FC = () => {
   const { numpad } = useKeyboard();
+  const { pushChar } = useMessage();
 
   // CSS
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        // minHeight: '40vh',
+        minHeight: '37.5vh',
         width: '80%',
       },
-      box: {
+      button: {
+        display: 'flex',
+        height: 'calc(100%/4)',
         width: `calc(100%/3)`,
+        padding: 0,
+
         '&:last-child': {
           flexGrow: 1,
-          // width: `calc(100%/2)`,
         },
       },
-      // button: {
-      //   // height: '25%',
-      //   // width: '33.33%',
-      //   borderRadius: 0,
-      //   boxShadow: 'none',
-      //   padding: 0,
-      // },
     })
   )();
 
   // BUTTON MAP
   const buttons: Map<number, Button> = new Map([
-    [1, { body: numpad ? '1' : [',', '!', '?'] }],
-    [2, { body: numpad ? '2' : ['a', 'b', 'c'] }],
-    [3, { body: numpad ? '3' : ['d', 'e', 'f'] }],
-    [4, { body: numpad ? '4' : ['g', 'h', 'i'] }],
-    [5, { body: numpad ? '5' : ['j', 'k', 'l'] }],
-    [6, { body: numpad ? '6' : ['m', 'n', 'o'] }],
-    [7, { body: numpad ? '7' : ['p', 'q', 'r', 's'] }],
-    [8, { body: numpad ? '8' : ['t', 'u', 'v'] }],
-    [9, { body: numpad ? '9' : ['w', 'x', 'y', 'z'] }],
+    [1, { body: numpad ? '1' : ',!?' }],
+    [2, { body: numpad ? '2' : 'abc' }],
+    [3, { body: numpad ? '3' : 'def' }],
+    [4, { body: numpad ? '4' : 'ghi' }],
+    [5, { body: numpad ? '5' : 'jkl' }],
+    [6, { body: numpad ? '6' : 'mno' }],
+    [7, { body: numpad ? '7' : 'pqrs' }],
+    [8, { body: numpad ? '8' : 'tuv' }],
+    [9, { body: numpad ? '9' : 'wxyz' }],
     [
       10,
       {
@@ -61,7 +59,9 @@ const MainPanel: FC = () => {
       0,
       {
         body: <SpaceBarIcon />,
-        handleClick: (e: MouseEvent) => console.log(e),
+        handleClick: (e: MouseEvent) => {
+          pushChar(' ');
+        },
       },
     ],
   ]);
@@ -69,12 +69,13 @@ const MainPanel: FC = () => {
   return (
     <Box display="flex" flexWrap="wrap" className={styles.root}>
       {[...buttons].map(([key, btn]) => (
-        <Box display="flex" justifyContent="center" className={styles.box}>
-          {/* <Button key={key}>{numpad && key < 10 ? key : value}</Button> */}
-          <Button key={key} onClick={btn.handleClick}>
-            {btn.body}
-          </Button>
-        </Box>
+        <Button
+          key={key}
+          onClick={btn.handleClick ? btn.handleClick : () => pushChar(btn.body)}
+          className={styles.button}
+        >
+          {btn.body}
+        </Button>
       ))}
     </Box>
   );

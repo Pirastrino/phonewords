@@ -1,19 +1,35 @@
 import React, { FC, ChangeEvent, useState } from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import { get } from 'lodash';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 
 import { WordTab } from '../WordTab';
+import { useMessage } from '../../hooks/useMessage';
+
+const getWords = gql`
+  query($group: [String!]) {
+    words(group: $group) {
+      lemma
+    }
+  }
+`;
 
 const SuggestionBar: FC = () => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState();
+  const { filter } = useMessage();
+  const { loading, data } = useQuery(getWords, {
+    variables: {
+      group: filter,
+    },
+  });
 
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        flexGrow: 1,
         width: '100%',
-        // height: '4rem',
         backgroundColor: theme.palette.background.paper,
       },
       tabs: {
@@ -28,27 +44,32 @@ const SuggestionBar: FC = () => {
     'aria-controls': `scrollable-auto-tabpanel-${index}`,
   });
 
-  const handleChange = (e: ChangeEvent<{}>, newValue: number) =>
+  const handleChange = (e: ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
+  };
 
   return (
     <Box className={styles.root}>
       <Tabs
-        value={value}
+        value={value || (!loading && get(data, 'words[0].lemma'))}
         onChange={handleChange}
-        indicatorColor="none"
         textColor="primary"
         variant="scrollable"
-        scrollButtons="auto"
+        scrollButtons="off"
         aria-label="scrollable auto tabs example"
         className={styles.tabs}
       >
-        <WordTab label="Word 1" {...a11yProps(0)} />
-        <WordTab label="Word 2" {...a11yProps(1)} />
-        <WordTab label="Word 3" {...a11yProps(2)} />
-        <WordTab label="Word 4" {...a11yProps(3)} />
-        <WordTab label="Word 5" {...a11yProps(4)} />
-        <WordTab label="Word 6" {...a11yProps(5)} />
+        {!loading &&
+          data.words &&
+          data.words.map((w: any, k: number) => (
+            <WordTab
+              key={k}
+              value={w.lemma}
+              // onActive={(e: any) => handleChange(e, k, w.lemma)}
+              label={w.lemma}
+              {...a11yProps(k)}
+            />
+          ))}
       </Tabs>
     </Box>
   );

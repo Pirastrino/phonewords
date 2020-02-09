@@ -10,7 +10,7 @@ import { useKeyboard } from '../../../hooks/useKeyboard';
 
 interface Button {
   body: string | JSX.Element;
-  handleClick: ((e: MouseEvent) => void) | undefined;
+  handleClick: ((e: MouseEvent) => void) | (() => void) | undefined;
 }
 
 const SidePanel: FC = () => {
@@ -20,11 +20,14 @@ const SidePanel: FC = () => {
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        height: '100%',
+        minHeight: '37.5vh',
         width: '20%',
       },
-      box: {
+      button: {
+        display: 'flex',
         width: '100%',
+        height: 'calc(100%/4)',
+        padding: 0,
       },
     })
   )();
@@ -35,40 +38,41 @@ const SidePanel: FC = () => {
       11,
       {
         body: <InsertEmoticonIcon />,
-        handleClick: (e: MouseEvent) => switchType(e), // TODO should open emojis
+        handleClick: switchType, // TODO should open emojis
       },
     ],
     [
       12,
       {
         body: numpad ? 'abc' : '123',
-        handleClick: (e: MouseEvent) => switchType(e),
+        handleClick: switchType,
+        // handleClick: (e: MouseEvent) => switchType(e),
       },
     ],
     [
       13,
       {
         body: <BackspaceOutlinedIcon />,
-        handleClick: (e: MouseEvent) => switchType(e), // TODO should delete last char
+        handleClick: switchType,
+        // handleClick: (e: MouseEvent) => switchType(e), // TODO should delete last char
       },
     ],
     [
       14,
       {
         body: <KeyboardReturnOutlinedIcon />,
-        handleClick: (e: MouseEvent) => switchType(e), // TODO should insert new line
+        handleClick: switchType,
+        // handleClick: (e: MouseEvent) => switchType(e), // TODO should insert new line
       },
     ],
   ]);
 
   return (
-    <Box display="flex" flexDirection="column" className={styles.root}>
+    <Box display="flex" flexWrap="wrap" className={styles.root}>
       {[...buttons].map(([key, btn]) => (
-        <Box display="flex" justifyContent="center" className={styles.box}>
-          <Button key={key} onClick={btn.handleClick}>
-            {btn.body}
-          </Button>
-        </Box>
+        <Button key={key} onClick={btn.handleClick} className={styles.button}>
+          {btn.body}
+        </Button>
       ))}
     </Box>
   );
