@@ -6,7 +6,7 @@ import { resolvers } from './resolvers';
 const main = async () => {
   const typeDefs = gql`
     type Query {
-      words(group: [String]): [Word!]
+      words(base: String): [Word!]
     }
 
     type Word {

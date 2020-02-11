@@ -1,20 +1,26 @@
 import { words } from './data';
-// import { words } from './data/words2';
+
+interface wordsArgs {
+  base: string;
+}
 
 const resolvers = {
   Query: {
-    words: (_: any, args: any) => {
-      const regex = `^${args.group.map((g: string) => `[${g}]`).join('')}$`;
-      const key = args.group.length < 10 ? args.group.length : 10;
-      return words
-        .get(key)
-        ?.filter((w: string) => w.match(regex))
-        .map((w: string) => ({ lemma: w }));
+    words: (_: any, args: wordsArgs) => {
+      const { base } = args;
+      const groups = ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxzy'];
+      const regexMap = base
+        .split('')
+        .map(c => `[${groups.filter((g: string) => g.includes(c))[0]}]`);
+      const regex = new RegExp(`^${regexMap.join('')}$`);
+      const key = regexMap.length < 10 ? regexMap.length : 10;
+      return (
+        words
+          .get(key)
+          ?.filter((w: string) => w.match(regex))
+          .map((w: string) => ({ lemma: w })) || []
+      );
     },
-
-    // getWordsFromWord: (_: any, args: any) => {
-
-    // }
   },
 };
 

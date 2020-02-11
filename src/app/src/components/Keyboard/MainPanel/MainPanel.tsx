@@ -2,8 +2,8 @@ import React, { FC, MouseEvent } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import SpaceBarIcon from '@material-ui/icons/SpaceBar';
-import KeyboardCapslockIcon from '@material-ui/icons/KeyboardCapslock';
+import Space from '@material-ui/icons/SpaceBar';
+import Cpsl from '@material-ui/icons/KeyboardCapslock';
 
 import { useKeyboard } from '../../../hooks/useKeyboard';
 import { useMessage } from '../../../hooks/useMessage';
@@ -15,7 +15,7 @@ interface Button {
 
 const MainPanel: FC = () => {
   const { numpad } = useKeyboard();
-  const { pushChar } = useMessage();
+  const { addChar } = useMessage();
 
   // CSS
   const styles = makeStyles((theme: Theme) =>
@@ -48,22 +48,8 @@ const MainPanel: FC = () => {
     [7, { body: numpad ? '7' : 'pqrs' }],
     [8, { body: numpad ? '8' : 'tuv' }],
     [9, { body: numpad ? '9' : 'wxyz' }],
-    [
-      10,
-      {
-        body: <KeyboardCapslockIcon />,
-        handleClick: (e: MouseEvent) => console.log(e),
-      },
-    ],
-    [
-      0,
-      {
-        body: <SpaceBarIcon />,
-        handleClick: (e: MouseEvent) => {
-          pushChar(' ');
-        },
-      },
-    ],
+    [10, { body: <Cpsl />, handleClick: (e: MouseEvent) => console.log(e) }],
+    [0, { body: <Space />, handleClick: (e: MouseEvent) => addChar(' ') }],
   ]);
 
   return (
@@ -71,7 +57,11 @@ const MainPanel: FC = () => {
       {[...buttons].map(([key, btn]) => (
         <Button
           key={key}
-          onClick={btn.handleClick ? btn.handleClick : () => pushChar(btn.body)}
+          onClick={
+            btn.handleClick
+              ? btn.handleClick
+              : () => addChar(btn.body.toString().charAt(0))
+          }
           className={styles.button}
         >
           {btn.body}

@@ -7,6 +7,7 @@ import BackspaceOutlinedIcon from '@material-ui/icons/BackspaceOutlined';
 import KeyboardReturnOutlinedIcon from '@material-ui/icons/KeyboardReturnOutlined';
 
 import { useKeyboard } from '../../../hooks/useKeyboard';
+import { useMessage } from '../../../hooks/useMessage';
 
 interface Button {
   body: string | JSX.Element;
@@ -15,6 +16,7 @@ interface Button {
 
 const SidePanel: FC = () => {
   const { numpad, switchType } = useKeyboard();
+  const { removeChar } = useMessage();
 
   // CSS
   const styles = makeStyles((theme: Theme) =>
@@ -53,8 +55,7 @@ const SidePanel: FC = () => {
       13,
       {
         body: <BackspaceOutlinedIcon />,
-        handleClick: switchType,
-        // handleClick: (e: MouseEvent) => switchType(e), // TODO should delete last char
+        handleClick: removeChar, // TODO should delete last char
       },
     ],
     [

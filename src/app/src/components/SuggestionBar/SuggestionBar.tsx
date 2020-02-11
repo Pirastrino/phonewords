@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useState } from 'react';
+import React, { FC, ChangeEvent, useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
@@ -10,8 +10,8 @@ import { WordTab } from '../WordTab';
 import { useMessage } from '../../hooks/useMessage';
 
 const getWords = gql`
-  query($group: [String!]) {
-    words(group: $group) {
+  query($base: String!) {
+    words(base: $base) {
       lemma
     }
   }
@@ -19,12 +19,17 @@ const getWords = gql`
 
 const SuggestionBar: FC = () => {
   const [value, setValue] = useState();
-  const { filter } = useMessage();
+  const { lastWord, switchWord } = useMessage();
+
   const { loading, data } = useQuery(getWords, {
     variables: {
-      group: filter,
+      base: (lastWord() && lastWord()![1]) || '',
     },
   });
+
+  useEffect(() => {
+    setValue(undefined);
+  }, [data]);
 
   const styles = makeStyles((theme: Theme) =>
     createStyles({
@@ -46,6 +51,8 @@ const SuggestionBar: FC = () => {
 
   const handleChange = (e: ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
+    switchWord(newValue);
+    // pushWord(newValue);
   };
 
   return (
@@ -65,7 +72,6 @@ const SuggestionBar: FC = () => {
             <WordTab
               key={k}
               value={w.lemma}
-              // onActive={(e: any) => handleChange(e, k, w.lemma)}
               label={w.lemma}
               {...a11yProps(k)}
             />
