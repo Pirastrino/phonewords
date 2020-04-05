@@ -11,6 +11,7 @@ const Display = () => {
         display: 'flex',
         flexGrow: 1,
         width: 'content-width',
+        whiteSpace: 'pre-wrap',
       },
     })
   )();

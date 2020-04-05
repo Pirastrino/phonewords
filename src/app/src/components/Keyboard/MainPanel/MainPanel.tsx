@@ -34,6 +34,9 @@ const MainPanel: FC = () => {
           flexGrow: 1,
         },
       },
+      hidden: {
+        display: 'none',
+      },
     })
   )();
 
@@ -49,7 +52,8 @@ const MainPanel: FC = () => {
     [8, { body: numpad ? '8' : 'tuv' }],
     [9, { body: numpad ? '9' : 'wxyz' }],
     [10, { body: <Cpsl />, handleClick: (e: MouseEvent) => console.log(e) }],
-    [0, { body: <Space />, handleClick: (e: MouseEvent) => addChar(' ') }],
+    [0, { body: '0' }],
+    [11, { body: <Space />, handleClick: (e: MouseEvent) => addChar(' ') }],
   ]);
 
   return (
@@ -58,11 +62,9 @@ const MainPanel: FC = () => {
         <Button
           key={key}
           onClick={
-            btn.handleClick
-              ? btn.handleClick
-              : () => addChar(btn.body.toString().charAt(0))
+            btn.handleClick || (() => addChar(btn.body.toString().charAt(0)))
           }
-          className={styles.button}
+          className={key === 0 && !numpad ? styles.hidden : styles.button}
         >
           {btn.body}
         </Button>

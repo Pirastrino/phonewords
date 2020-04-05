@@ -1,4 +1,4 @@
-import { words } from './data';
+import { words } from './data/words';
 
 interface wordsArgs {
   base: string;

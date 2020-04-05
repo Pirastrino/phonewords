@@ -1,13 +1,17 @@
 import create from 'zustand';
 
 type Keyboard = {
-  numpad: Boolean;
-  switchType: () => void;
+  numpad: boolean;
+  secondary: string | false;
+  toggleNumpad: () => void;
+  setSecondary: (value?: string) => void;
 };
 
 const [useKeyboard] = create<Keyboard>(set => ({
   numpad: false,
-  switchType: () => set(state => ({ numpad: !state.numpad })),
+  secondary: 'abc',
+  toggleNumpad: () => set(state => ({ numpad: !state.numpad })),
+  setSecondary: value => set(_ => ({ secondary: value || false })),
 }));
 
 export { useKeyboard };

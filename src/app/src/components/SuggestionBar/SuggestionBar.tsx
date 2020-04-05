@@ -5,9 +5,11 @@ import { get } from 'lodash';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
+import { Button } from '@material-ui/core';
 
 import { WordTab } from '../WordTab';
 import { useMessage } from '../../hooks/useMessage';
+import { useKeyboard } from '../../hooks/useKeyboard';
 
 const getWords = gql`
   query($base: String!) {
@@ -18,8 +20,9 @@ const getWords = gql`
 `;
 
 const SuggestionBar: FC = () => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<string | undefined>();
   const { lastWord, switchWord } = useMessage();
+  const { secondary, setSecondary } = useKeyboard();
 
   const { loading, data } = useQuery(getWords, {
     variables: {
@@ -35,9 +38,14 @@ const SuggestionBar: FC = () => {
     createStyles({
       root: {
         width: '100%',
+        height: '100%',
         backgroundColor: theme.palette.background.paper,
       },
       tabs: {
+        borderTop: `1px solid ${theme.palette.divider}`,
+        borderBottom: `1px solid ${theme.palette.divider}`,
+      },
+      btn: {
         borderTop: `1px solid ${theme.palette.divider}`,
         borderBottom: `1px solid ${theme.palette.divider}`,
       },
@@ -57,26 +65,32 @@ const SuggestionBar: FC = () => {
 
   return (
     <Box className={styles.root}>
-      <Tabs
-        value={value || (!loading && get(data, 'words[0].lemma'))}
-        onChange={handleChange}
-        textColor="primary"
-        variant="scrollable"
-        scrollButtons="off"
-        aria-label="scrollable auto tabs example"
-        className={styles.tabs}
-      >
-        {!loading &&
-          data.words &&
-          data.words.map((w: any, k: number) => (
-            <WordTab
-              key={k}
-              value={w.lemma}
-              label={w.lemma}
-              {...a11yProps(k)}
-            />
-          ))}
-      </Tabs>
+      {secondary ? (
+        <Button className={styles.btn} onClick={() => setSecondary()}>
+          close
+        </Button>
+      ) : (
+        <Tabs
+          value={value || (!loading && get(data, 'words[0].lemma'))}
+          onChange={handleChange}
+          textColor="primary"
+          variant="scrollable"
+          scrollButtons="off"
+          aria-label="scrollable auto tabs example"
+          className={styles.tabs}
+        >
+          {!loading &&
+            data.words &&
+            data.words.map((w: any, k: number) => (
+              <WordTab
+                key={k}
+                value={w.lemma}
+                label={w.lemma}
+                {...a11yProps(k)}
+              />
+            ))}
+        </Tabs>
+      )}
     </Box>
   );
 };

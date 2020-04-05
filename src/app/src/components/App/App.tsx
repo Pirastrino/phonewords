@@ -36,13 +36,10 @@ const App: FC = () => {
   return (
     <Layout>
       <ApolloProvider client={client}>
-        {/* <Helmet /> */}
-        {/* <AppRouter/> */}
         <Container disableGutters className={styles.root} maxWidth="xs">
           <Header />
           <Display />
           <SuggestionBar />
-          {/* <Keypad /> */}
           <Keyboard />
         </Container>
       </ApolloProvider>

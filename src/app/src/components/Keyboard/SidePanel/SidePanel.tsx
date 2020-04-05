@@ -11,12 +11,12 @@ import { useMessage } from '../../../hooks/useMessage';
 
 interface Button {
   body: string | JSX.Element;
-  handleClick: ((e: MouseEvent) => void) | (() => void) | undefined;
+  handleClick: (e: MouseEvent) => void | (() => void) | undefined;
 }
 
 const SidePanel: FC = () => {
-  const { numpad, switchType } = useKeyboard();
-  const { removeChar } = useMessage();
+  const { numpad, toggleNumpad, setSecondary } = useKeyboard();
+  const { addChar, removeChar } = useMessage();
 
   // CSS
   const styles = makeStyles((theme: Theme) =>
@@ -40,15 +40,15 @@ const SidePanel: FC = () => {
       11,
       {
         body: <InsertEmoticonIcon />,
-        handleClick: switchType, // TODO should open emojis
+        // TODO should open emojis
+        handleClick: (e: MouseEvent) => setSecondary('abc'),
       },
     ],
     [
       12,
       {
         body: numpad ? 'abc' : '123',
-        handleClick: switchType,
-        // handleClick: (e: MouseEvent) => switchType(e),
+        handleClick: toggleNumpad,
       },
     ],
     [
@@ -62,8 +62,7 @@ const SidePanel: FC = () => {
       14,
       {
         body: <KeyboardReturnOutlinedIcon />,
-        handleClick: switchType,
-        // handleClick: (e: MouseEvent) => switchType(e), // TODO should insert new line
+        handleClick: () => addChar('\n'),
       },
     ],
   ]);
