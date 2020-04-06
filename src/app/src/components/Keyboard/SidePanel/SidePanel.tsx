@@ -10,8 +10,9 @@ import { useKeyboard } from '../../../hooks/useKeyboard';
 import { useMessage } from '../../../hooks/useMessage';
 
 interface Button {
-  body: string | JSX.Element;
-  handleClick: (e: MouseEvent) => void | (() => void) | undefined;
+  value: string | JSX.Element;
+  name?: string;
+  handleClick?: ((e: MouseEvent) => void) | (() => void) | undefined;
 }
 
 const SidePanel: FC = () => {
@@ -22,7 +23,8 @@ const SidePanel: FC = () => {
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        backgroundColor: theme.palette.background.default,
+        display: 'flex',
+        flexWrap: 'wrap',
         minHeight: '37.5vh',
         width: '20%',
       },
@@ -41,39 +43,39 @@ const SidePanel: FC = () => {
     [
       11,
       {
-        body: <InsertEmoticonIcon />,
-        // TODO should open emojis
-        handleClick: (e: MouseEvent) => setSecondary('abc'),
+        value: <InsertEmoticonIcon />,
+        handleClick: (e: MouseEvent) => setSecondary('emoji'),
       },
     ],
     [
       12,
       {
-        body: numpad ? 'abc' : '123',
+        value: 'abc',
+        name: '123',
         handleClick: toggleNumpad,
       },
     ],
     [
       13,
       {
-        body: <BackspaceOutlinedIcon />,
-        handleClick: removeChar, // TODO should delete last char
+        value: <BackspaceOutlinedIcon />,
+        handleClick: removeChar,
       },
     ],
     [
       14,
       {
-        body: <KeyboardReturnOutlinedIcon />,
+        value: <KeyboardReturnOutlinedIcon />,
         handleClick: () => addChar('\n'),
       },
     ],
   ]);
 
   return (
-    <Box display="flex" flexWrap="wrap" className={styles.root}>
+    <Box className={styles.root}>
       {[...buttons].map(([key, btn]) => (
         <Button key={key} onClick={btn.handleClick} className={styles.btn}>
-          {btn.body}
+          {(!numpad && btn.name) || btn.value}
         </Button>
       ))}
     </Box>

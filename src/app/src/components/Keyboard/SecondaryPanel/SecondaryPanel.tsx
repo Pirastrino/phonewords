@@ -1,13 +1,10 @@
-import React, { FC, MouseEvent } from 'react';
+import React, { FC } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Space from '@material-ui/icons/SpaceBar';
-import Cpsl from '@material-ui/icons/KeyboardCapslock';
 
 import { useKeyboard } from '../../../hooks/useKeyboard';
 import { useMessage } from '../../../hooks/useMessage';
-import { buttonMap } from './buttonMap';
 
 const SecondaryPanel: FC = () => {
   const { secondary } = useKeyboard();
@@ -17,7 +14,9 @@ const SecondaryPanel: FC = () => {
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        backgroundColor: theme.palette.background.default,
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignContent: 'flex-start',
         minHeight: '37.5vh',
         width: '100%',
       },
@@ -27,21 +26,36 @@ const SecondaryPanel: FC = () => {
       btn: {
         display: 'flex',
         textTransform: 'none',
-        height: `calc(100%/4)`,
-        width: `calc(100%/6)`,
+        height: 'calc(100%/4)',
+        minWidth: 'calc(100%/6)',
         borderRadius: 0,
         padding: 0,
       },
       btn__primary: {
-        width: `calc(100%/${secondary && secondary.length})`,
+        minWidth: `calc(100%/${
+          secondary && secondary !== ',?!' && secondary.length
+        })`,
       },
     })
   )();
 
+  const buttonMap: Map<string, string> = new Map([
+    [',?!', ',?!.\'-_@#&:;+"/\\=*%$£€(){}[]<>`´|^µ¹²©®×–—~«»„“”‘’§¥₩₽¢‰•¡¿…'],
+    ['abc', 'àáâäæãåābçćč'],
+    ['def', 'ďèéêëēėę'],
+    ['ghi', 'îïíīįì'],
+    ['jkl', 'ł'],
+    ['mno', 'ňñńôöòóœøōõ'],
+    ['pqrs', 'řŕšßś'],
+    ['tuv', 'ťúůûüùū'],
+    ['wxyz', 'ýÿžźż'],
+  ]);
+
   return (
-    <Box display="flex" flexWrap="wrap" className={styles.root}>
+    <Box className={styles.root}>
       {secondary &&
-        (secondary.toUpperCase() + secondary).split('').map((c) => (
+        secondary !== ',?!' &&
+        secondary.split('').map((c) => (
           <Button
             key={c}
             className={`${styles.btn} ${styles.btn__primary}`}
@@ -51,11 +65,18 @@ const SecondaryPanel: FC = () => {
           </Button>
         ))}
       {secondary &&
-        buttonMap.get(secondary)!.map((key) => (
-          <Button key={key} className={styles.btn} onClick={() => addChar(key)}>
-            {key}
-          </Button>
-        ))}
+        buttonMap
+          .get(secondary)!
+          .split('')
+          .map((key) => (
+            <Button
+              key={key}
+              className={styles.btn}
+              onClick={() => addChar(key)}
+            >
+              {key}
+            </Button>
+          ))}
     </Box>
   );
 };

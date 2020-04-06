@@ -5,9 +5,9 @@ type ThemeContext = {
   toggleDarkTheme: () => void;
 };
 
-const [useTheme] = create<ThemeContext>(set => ({
-  dark: false,
-  toggleDarkTheme: () => set(state => ({ dark: !state.dark })),
+const [useTheme] = create<ThemeContext>((set) => ({
+  dark: true,
+  toggleDarkTheme: () => set((state) => ({ dark: !state.dark })),
 }));
 
 export { useTheme };

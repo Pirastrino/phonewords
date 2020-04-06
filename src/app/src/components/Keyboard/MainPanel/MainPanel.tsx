@@ -23,13 +23,14 @@ const MainPanel: FC = () => {
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        backgroundColor: theme.palette.background.default,
+        display: 'flex',
+        flexWrap: 'wrap',
         minHeight: '37.5vh',
         width: '80%',
       },
       btn: {
         display: 'flex',
-        height: 'calc(100%/4)',
+        maxHeight: 'calc(100%/4)',
         width: 'calc(100%/3)',
         borderRadius: 0,
         padding: 0,
@@ -46,7 +47,7 @@ const MainPanel: FC = () => {
 
   // BUTTON MAP
   const buttons: Map<number, Button> = new Map([
-    [1, { value: '1', name: ',!?' }],
+    [1, { value: '1', name: ',?!' }],
     [2, { value: '2', name: 'abc' }],
     [3, { value: '3', name: 'def' }],
     [4, { value: '4', name: 'ghi' }],
@@ -73,7 +74,7 @@ const MainPanel: FC = () => {
   ]);
 
   return (
-    <Box display="flex" flexWrap="wrap" className={styles.root}>
+    <Box className={styles.root}>
       {[...buttons].map(([key, btn]) => (
         <Button
           key={key}
