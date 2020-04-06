@@ -29,6 +29,7 @@ const SecondaryPanel: FC = () => {
         textTransform: 'none',
         height: `calc(100%/4)`,
         width: `calc(100%/6)`,
+        borderRadius: 0,
         padding: 0,
       },
       btn__primary: {
@@ -40,7 +41,7 @@ const SecondaryPanel: FC = () => {
   return (
     <Box display="flex" flexWrap="wrap" className={styles.root}>
       {secondary &&
-        (secondary.toUpperCase() + secondary).split('').map(c => (
+        (secondary.toUpperCase() + secondary).split('').map((c) => (
           <Button
             key={c}
             className={`${styles.btn} ${styles.btn__primary}`}
@@ -50,7 +51,7 @@ const SecondaryPanel: FC = () => {
           </Button>
         ))}
       {secondary &&
-        buttonMap.get(secondary)!.map(key => (
+        buttonMap.get(secondary)!.map((key) => (
           <Button key={key} className={styles.btn} onClick={() => addChar(key)}>
             {key}
           </Button>

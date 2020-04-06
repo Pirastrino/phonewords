@@ -9,6 +9,7 @@ const Display = () => {
     createStyles({
       root: {
         display: 'flex',
+        color: theme.palette.text.primary,
         flexGrow: 1,
         width: 'content-width',
         backgroundColor: theme.palette.background.paper,

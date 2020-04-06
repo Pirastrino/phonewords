@@ -7,14 +7,16 @@ import Cpsl from '@material-ui/icons/KeyboardCapslock';
 
 import { useKeyboard } from '../../../hooks/useKeyboard';
 import { useMessage } from '../../../hooks/useMessage';
+import { useLongPress } from '../../../hooks/useLongPress';
 
 interface Button {
-  body: string | JSX.Element;
+  value: string | JSX.Element;
+  name?: string;
   handleClick?: ((e: MouseEvent) => void) | (() => void) | undefined;
 }
 
 const MainPanel: FC = () => {
-  const { numpad } = useKeyboard();
+  const { setSecondary, numpad } = useKeyboard();
   const { addChar } = useMessage();
 
   // CSS
@@ -25,10 +27,11 @@ const MainPanel: FC = () => {
         minHeight: '37.5vh',
         width: '80%',
       },
-      button: {
+      btn: {
         display: 'flex',
         height: 'calc(100%/4)',
-        width: `calc(100%/3)`,
+        width: 'calc(100%/3)',
+        borderRadius: 0,
         padding: 0,
 
         '&:last-child': {
@@ -43,18 +46,30 @@ const MainPanel: FC = () => {
 
   // BUTTON MAP
   const buttons: Map<number, Button> = new Map([
-    [1, { body: numpad ? '1' : ',!?' }],
-    [2, { body: numpad ? '2' : 'abc' }],
-    [3, { body: numpad ? '3' : 'def' }],
-    [4, { body: numpad ? '4' : 'ghi' }],
-    [5, { body: numpad ? '5' : 'jkl' }],
-    [6, { body: numpad ? '6' : 'mno' }],
-    [7, { body: numpad ? '7' : 'pqrs' }],
-    [8, { body: numpad ? '8' : 'tuv' }],
-    [9, { body: numpad ? '9' : 'wxyz' }],
-    [10, { body: <Cpsl />, handleClick: (e: MouseEvent) => console.log(e) }],
-    [0, { body: '0' }],
-    [11, { body: <Space />, handleClick: (e: MouseEvent) => addChar(' ') }],
+    [1, { value: '1', name: ',!?' }],
+    [2, { value: '2', name: 'abc' }],
+    [3, { value: '3', name: 'def' }],
+    [4, { value: '4', name: 'ghi' }],
+    [5, { value: '5', name: 'jkl' }],
+    [6, { value: '6', name: 'mno' }],
+    [7, { value: '7', name: 'pqrs' }],
+    [8, { value: '8', name: 'tuv' }],
+    [9, { value: '9', name: 'wxyz' }],
+    [
+      10,
+      {
+        value: <Cpsl />,
+        handleClick: (e: MouseEvent) => console.log(e),
+      },
+    ],
+    [0, { value: '0' }],
+    [
+      11,
+      {
+        value: <Space />,
+        handleClick: (e: MouseEvent) => addChar(' '),
+      },
+    ],
   ]);
 
   return (
@@ -63,11 +78,16 @@ const MainPanel: FC = () => {
         <Button
           key={key}
           onClick={
-            btn.handleClick || (() => addChar(btn.body.toString().charAt(0)))
+            btn.handleClick ||
+            (() =>
+              addChar(
+                ((!numpad && btn.name) || btn.value).toString().charAt(0)
+              ))
           }
-          className={key === 0 && !numpad ? styles.hidden : styles.button}
+          {...useLongPress(() => btn.name && setSecondary(btn.name), 500)}
+          className={key === 0 && !numpad ? styles.hidden : styles.btn}
         >
-          {btn.body}
+          {(!numpad && btn.name) || btn.value}
         </Button>
       ))}
     </Box>

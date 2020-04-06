@@ -26,11 +26,12 @@ const SidePanel: FC = () => {
         minHeight: '37.5vh',
         width: '20%',
       },
-      button: {
+      btn: {
         display: 'flex',
         width: '100%',
         height: 'calc(100%/4)',
         padding: 0,
+        borderRadius: 0,
       },
     })
   )();
@@ -71,7 +72,7 @@ const SidePanel: FC = () => {
   return (
     <Box display="flex" flexWrap="wrap" className={styles.root}>
       {[...buttons].map(([key, btn]) => (
-        <Button key={key} onClick={btn.handleClick} className={styles.button}>
+        <Button key={key} onClick={btn.handleClick} className={styles.btn}>
           {btn.body}
         </Button>
       ))}

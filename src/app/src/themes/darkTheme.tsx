@@ -1,7 +1,4 @@
 import { createMuiTheme } from '@material-ui/core';
-// import { green } from '@material-ui/core/colors';
-
-// import { baseOverrides } from './baseOverrides';
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -13,13 +10,6 @@ const darkTheme = createMuiTheme({
       main: '#E98305',
     },
   },
-  // overrides: {
-  //   MuiTab: {
-  //     root: {
-  //       height: 100%,
-  //     },
-  //   },
-  // },
 });
 
 export { darkTheme };

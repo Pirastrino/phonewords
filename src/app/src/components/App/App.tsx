@@ -32,7 +32,8 @@ const App: FC = () => {
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: 'whitesmoke',
+        // backgroundColor: theme.palette.background.default,
+        // backgroundColor: 'whitesmoke',
         // [`${theme.breakpoints.up('sm')} and (orientation: portrait)`]: {
         //   maxWidth: '40vw',
         // },
