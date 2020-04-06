@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import { Button } from '@material-ui/core';
 
 import { WordTab } from '../WordTab';
@@ -38,14 +39,18 @@ const SuggestionBar: FC = () => {
     createStyles({
       root: {
         width: '100%',
-        height: '100%',
+        minHeight: theme.typography.pxToRem(56),
         backgroundColor: theme.palette.background.paper,
       },
       tabs: {
+        minHeight: theme.typography.pxToRem(56),
         borderTop: `1px solid ${theme.palette.divider}`,
         borderBottom: `1px solid ${theme.palette.divider}`,
       },
       btn: {
+        width: '100%',
+        minHeight: theme.typography.pxToRem(56),
+        borderRadius: 0,
         borderTop: `1px solid ${theme.palette.divider}`,
         borderBottom: `1px solid ${theme.palette.divider}`,
       },
@@ -75,7 +80,7 @@ const SuggestionBar: FC = () => {
           onChange={handleChange}
           textColor="primary"
           variant="scrollable"
-          scrollButtons="off"
+          // scrollButtons="on"
           aria-label="scrollable auto tabs example"
           className={styles.tabs}
         >

@@ -2,8 +2,6 @@ import React, { FC, ChangeEvent } from 'react';
 import Tab from '@material-ui/core/Tab';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-// import { useMessage } from '../../hooks/useMessage';
-
 interface WordTabProps {
   label: string;
   value: string;
@@ -13,12 +11,11 @@ interface WordTabProps {
 const WordTab = withStyles((theme: Theme) =>
   createStyles({
     root: {
-      color: theme.palette.text.primary,
+      minHeight: theme.typography.pxToRem(54),
       fontWeight: theme.typography.fontWeightRegular,
       textTransform: 'none',
       minWidth: 'max-content',
-      padding: `0 0.5rem`,
-      borderRight: `1px solid ${theme.palette.divider}`,
+      padding: '0 .75em',
     },
   })
 )((props: WordTabProps) => <Tab disableRipple {...props} />);

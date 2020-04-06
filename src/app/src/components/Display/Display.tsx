@@ -11,7 +11,18 @@ const Display = () => {
         display: 'flex',
         flexGrow: 1,
         width: 'content-width',
+        backgroundColor: theme.palette.background.paper,
         whiteSpace: 'pre-wrap',
+      },
+      p: {
+        height: '1.15rem',
+        paddingRight: '.075em',
+        borderRight: '.15em solid orange',
+        animation: '$blink-caret 1s step-end infinite',
+      },
+      '@keyframes blink-caret': {
+        'from, to': { borderColor: 'transparent' },
+        '50%': { borderColor: 'orange' },
       },
     })
   )();
@@ -20,7 +31,7 @@ const Display = () => {
 
   return (
     <Box p={2} className={styles.root}>
-      {message}
+      <p className={styles.p}>{message}</p>
     </Box>
   );
 };

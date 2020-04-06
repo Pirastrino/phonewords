@@ -17,6 +17,7 @@ const SecondaryPanel: FC = () => {
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
+        backgroundColor: theme.palette.background.default,
         minHeight: '37.5vh',
         width: '100%',
       },

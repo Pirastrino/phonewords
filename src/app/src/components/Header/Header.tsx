@@ -5,17 +5,18 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
-// import Brightness5Icon from '@material-ui/icons/Brightness5';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
+
+import { useTheme } from '../../hooks/useTheme';
 
 const Header = () => {
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        flexGrow: 1,
-      },
-      themeButton: {
-        // borderTop: `1px solid ${theme.palette.divider}`,
-        // borderBottom: `1px solid ${theme.palette.divider}`,
+        color: 'white',
+        backgroundColor:
+          (theme.palette.type === 'dark' && theme.palette.background.default) ||
+          theme.palette.primary.main,
       },
       title: {
         flexGrow: 1,
@@ -23,19 +24,26 @@ const Header = () => {
     })
   )();
 
+  const { dark, toggleDarkTheme } = useTheme();
+
   return (
-    <div className={styles.root}>
-      <AppBar elevation={0} position="static">
-        <Toolbar>
-          <Typography variant="h6" className={styles.title}>
-            Kiwi | T9
-          </Typography>
-          <IconButton edge="end" color="inherit" aria-label="theme">
-            <Brightness4Icon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-    </div>
+    // <div className={styles.root}>
+    <AppBar elevation={0} position="static" className={styles.root}>
+      <Toolbar>
+        <Typography variant="h6" className={styles.title}>
+          Kiwi | T9
+        </Typography>
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="theme"
+          onClick={() => toggleDarkTheme()}
+        >
+          {dark ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+    // </div>
   );
 };
 
