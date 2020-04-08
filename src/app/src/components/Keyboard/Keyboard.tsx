@@ -2,10 +2,12 @@ import React, { FC, Fragment } from 'react';
 import Box from '@material-ui/core/Box';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 
+// Components
 import { MainPanel } from './MainPanel/MainPanel';
 import { SidePanel } from './SidePanel/SidePanel';
 import { SecondaryPanel } from './SecondaryPanel/SecondaryPanel';
 
+// Hooks
 import { useKeyboard } from '../../hooks/useKeyboard';
 
 const Keyboard: FC = () => {

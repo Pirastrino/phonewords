@@ -4,7 +4,6 @@ import { CssBaseline } from '@material-ui/core';
 const Layout: FC = ({ children }) => (
   <Fragment>
     <CssBaseline />
-    {/* <Header /> */}
     <main>{children}</main>
   </Fragment>
 );

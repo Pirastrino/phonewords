@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import {
@@ -15,7 +15,10 @@ import { Display } from '../Display/Display';
 import { Header } from '../Header/Header';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { SuggestionBar } from '../SuggestionBar/SuggestionBar';
+
+// Hooks
 import { useTheme } from '../../hooks/useTheme';
+import { useKeyboard } from '../../hooks/useKeyboard';
 
 // Themes
 import { lightTheme } from '../../themes/lightTheme';
@@ -26,25 +29,20 @@ const client = new ApolloClient({
 });
 
 const App: FC = () => {
+  const { dark } = useTheme();
+
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        // backgroundColor: theme.palette.background.default,
-        // backgroundColor: 'whitesmoke',
-        // [`${theme.breakpoints.up('sm')} and (orientation: portrait)`]: {
-        //   maxWidth: '40vw',
-        // },
       },
       display: {
         flexGrow: 1,
       },
     })
   )();
-
-  const { dark } = useTheme();
 
   return (
     <Layout>

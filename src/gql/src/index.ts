@@ -7,10 +7,26 @@ const main = async () => {
   const typeDefs = gql`
     type Query {
       words(base: String): [Word!]
+      emojis: [Emoji!]
     }
 
     type Word {
       lemma: String
+    }
+
+    type Emoji {
+      slug: String
+      character: String
+      unicodeName: String
+      codePoint: String
+      group: String
+      subGroup: String
+      variants: [emojiVariant!]
+    }
+
+    type emojiVariant {
+      slug: String
+      character: String
     }
   `;
 
@@ -27,7 +43,3 @@ const main = async () => {
 };
 
 main();
-// import { words } from './data/words';
-
-// const regex = new RegExp('^[are]');
-// console.log(words.get(3)?.filter(w => w.match(regex)));

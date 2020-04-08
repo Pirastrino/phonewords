@@ -5,7 +5,6 @@ import { get } from 'lodash';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import { Button } from '@material-ui/core';
 
 import { WordTab } from '../WordTab';
@@ -65,7 +64,6 @@ const SuggestionBar: FC = () => {
   const handleChange = (e: ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
     switchWord(newValue);
-    // pushWord(newValue);
   };
 
   return (
@@ -80,7 +78,6 @@ const SuggestionBar: FC = () => {
           onChange={handleChange}
           textColor="primary"
           variant="scrollable"
-          // scrollButtons="on"
           aria-label="scrollable auto tabs example"
           className={styles.tabs}
         >
