@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useState, useEffect } from 'react';
+import React, { FC, ChangeEvent, useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
@@ -20,19 +20,20 @@ const getWords = gql`
 `;
 
 const SuggestionBar: FC = () => {
-  const [value, setValue] = useState<string | undefined>();
-  const { lastWord, switchWord } = useMessage();
+  const { message, lastWord, switchWord } = useMessage();
   const { secondary, setSecondary } = useKeyboard();
 
   const { loading, data } = useQuery(getWords, {
     variables: {
-      base: (lastWord() && lastWord()![1]) || '',
+      base: (message.match(lastWord) && message.match(lastWord)![1]) || '',
     },
   });
 
-  useEffect(() => {
-    setValue(undefined);
-  }, [data]);
+  useMemo(
+    () =>
+      get(data, 'words[0].lemma') && switchWord(get(data, 'words[0].lemma')),
+    [data]
+  );
 
   const styles = makeStyles((theme: Theme) =>
     createStyles({
@@ -61,10 +62,8 @@ const SuggestionBar: FC = () => {
     'aria-controls': `scrollable-auto-tabpanel-${index}`,
   });
 
-  const handleChange = (e: ChangeEvent<{}>, newValue: string) => {
-    setValue(newValue);
+  const handleChange = (e: ChangeEvent<{}>, newValue: string) =>
     switchWord(newValue);
-  };
 
   return (
     <Box className={styles.root}>
@@ -74,7 +73,7 @@ const SuggestionBar: FC = () => {
         </Button>
       ) : (
         <Tabs
-          value={value || (!loading && get(data, 'words[0].lemma'))}
+          value={message.match(lastWord) && message.match(lastWord)![1]}
           onChange={handleChange}
           textColor="primary"
           variant="scrollable"

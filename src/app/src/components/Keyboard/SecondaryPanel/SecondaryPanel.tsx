@@ -38,7 +38,7 @@ const SecondaryPanel: FC = () => {
         display: 'flex',
         flexWrap: 'wrap',
         alignContent: 'flex-start',
-        minHeight: '37.5vh',
+        height: '37.5vh',
         width: '100%',
       },
       hidden: {

@@ -5,13 +5,13 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { useMessage } from '../../hooks/useMessage';
 
 const Display = () => {
+  const { message } = useMessage();
+
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        // display: 'flex',
         color: theme.palette.text.primary,
         flexGrow: 1,
-        // width: 'content-width',
         backgroundColor: theme.palette.background.paper,
         whiteSpace: 'pre-wrap',
 
@@ -20,11 +20,10 @@ const Display = () => {
         },
       },
       cursor: {
-        // fontSize: `${1.5 * theme.typography.fontSize}px`,
         fontWeight: theme.typography.fontWeightBold,
+        borderRight: `2px solid ${theme.palette.secondary.main}`,
         paddingLeft: `${0.1 * theme.typography.fontSize}px`,
         animation: '$blink-caret 1s step-end infinite',
-        borderRight: `2px solid ${theme.palette.secondary.main}`,
       },
 
       '@keyframes blink-caret': {
@@ -33,8 +32,6 @@ const Display = () => {
       },
     })
   )();
-
-  const { message } = useMessage();
 
   return (
     <Box p={2} className={styles.root}>
