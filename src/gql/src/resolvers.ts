@@ -16,10 +16,14 @@ const resolvers = {
       const regex = new RegExp(`^${regexMap.join('')}$`);
       const key = regexMap.length < 10 ? regexMap.length : 10;
       return (
-        words
-          .get(key)
-          ?.filter((w: string) => w.match(regex))
-          .map((w: string) => ({ lemma: w })) || []
+        [
+          ...new Set(
+            words
+              .get(key)
+              ?.filter((w: string) => w.match(regex))
+              .concat(base)
+          ),
+        ].map((w: string) => ({ lemma: w })) || []
       );
     },
     emojis: () => fetchEmoji(),

@@ -8,7 +8,7 @@ import Tabs from '@material-ui/core/Tabs';
 import { Button } from '@material-ui/core';
 
 import { WordTab } from '../WordTab';
-import { useMessage } from '../../hooks/useMessage';
+import { useMessage, lastWordReg } from '../../hooks/useMessage';
 import { useKeyboard } from '../../hooks/useKeyboard';
 
 const getWords = gql`
@@ -20,20 +20,25 @@ const getWords = gql`
 `;
 
 const SuggestionBar: FC = () => {
-  const { message, lastWord, switchWord } = useMessage();
+  const { message, index, setFirst, switchWord } = useMessage();
   const { secondary, setSecondary } = useKeyboard();
+  const word =
+    (message.slice(index).match(lastWordReg) &&
+      message.slice(index).match(lastWordReg)![1]) ||
+    '';
 
   const { loading, data } = useQuery(getWords, {
     variables: {
-      base: (message.match(lastWord) && message.match(lastWord)![1]) || '',
+      base: word,
     },
   });
 
-  useMemo(
-    () =>
-      get(data, 'words[0].lemma') && switchWord(get(data, 'words[0].lemma')),
-    [data]
-  );
+  useMemo(() => {
+    get(data, 'words[0].lemma') &&
+      message.length > 0 &&
+      setFirst &&
+      switchWord(get(data, 'words[0].lemma'));
+  }, [data]);
 
   const styles = makeStyles((theme: Theme) =>
     createStyles({
@@ -73,7 +78,7 @@ const SuggestionBar: FC = () => {
         </Button>
       ) : (
         <Tabs
-          value={message.match(lastWord) && message.match(lastWord)![1]}
+          value={word}
           onChange={handleChange}
           textColor="primary"
           variant="scrollable"
@@ -81,7 +86,7 @@ const SuggestionBar: FC = () => {
           className={styles.tabs}
         >
           {!loading &&
-            data.words &&
+            data &&
             data.words.map((w: any, k: number) => (
               <WordTab
                 key={k}

@@ -23,7 +23,7 @@ type Emoji = {
 
 const SecondaryPanel: FC = () => {
   const { secondary } = useKeyboard();
-  const { addChar } = useMessage();
+  const { addSingleChar } = useMessage();
   const { loading, data, error } = useQuery(getEmojis);
 
   const emoji: string[] = useMemo(
@@ -35,7 +35,7 @@ const SecondaryPanel: FC = () => {
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        display: 'flex',
+        display: `${secondary ? 'flex' : 'none'}`,
         flexWrap: 'wrap',
         alignContent: 'flex-start',
         height: '37.5vh',
@@ -69,7 +69,7 @@ const SecondaryPanel: FC = () => {
           <Button
             key={c}
             className={`${styles.btn} ${styles.btn__primary}`}
-            onClick={() => addChar(c)}
+            onClick={() => addSingleChar(c)}
           >
             {c}
           </Button>
@@ -78,7 +78,11 @@ const SecondaryPanel: FC = () => {
         secondary === 'emoji'
           ? emoji
           : (secondary && buttonMap.get(secondary)) || [])().map((key) => (
-        <Button key={key} className={styles.btn} onClick={() => addChar(key)}>
+        <Button
+          key={key}
+          className={styles.btn}
+          onClick={() => addSingleChar(key)}
+        >
           {key}
         </Button>
       ))}

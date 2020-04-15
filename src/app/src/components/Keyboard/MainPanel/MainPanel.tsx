@@ -16,14 +16,14 @@ interface Button {
 }
 
 const MainPanel: FC = () => {
-  const { setSecondary, numpad } = useKeyboard();
+  const { setSecondary, numpad, secondary } = useKeyboard();
   const { addChar } = useMessage();
 
   // CSS
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        display: 'flex',
+        display: `${secondary ? 'none' : 'flex'}`,
         flexWrap: 'wrap',
         minHeight: '37.5vh',
         width: '80%',
@@ -85,7 +85,7 @@ const MainPanel: FC = () => {
                 ((!numpad && btn.name) || btn.value).toString().charAt(0)
               ))
           }
-          {...useLongPress(() => btn.name && setSecondary(btn.name), 500)}
+          {...useLongPress(() => btn.name && setSecondary(btn.name))}
           className={key === 0 && !numpad ? styles.hidden : styles.btn}
         >
           {(!numpad && btn.name) || btn.value}

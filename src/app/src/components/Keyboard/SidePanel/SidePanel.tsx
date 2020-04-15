@@ -16,14 +16,14 @@ interface Button {
 }
 
 const SidePanel: FC = () => {
-  const { numpad, toggleNumpad, setSecondary } = useKeyboard();
+  const { numpad, toggleNumpad, secondary, setSecondary } = useKeyboard();
   const { addChar, removeChar } = useMessage();
 
   // CSS
   const styles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
-        display: 'flex',
+        display: `${secondary ? 'none' : 'flex'}`,
         flexWrap: 'wrap',
         minHeight: '37.5vh',
         width: '20%',

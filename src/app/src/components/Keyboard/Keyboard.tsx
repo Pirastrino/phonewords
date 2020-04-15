@@ -25,14 +25,9 @@ const Keyboard: FC = () => {
 
   return (
     <Box className={styles.root}>
-      {secondary ? (
-        <SecondaryPanel />
-      ) : (
-        <Fragment>
-          <MainPanel />
-          <SidePanel />
-        </Fragment>
-      )}
+      <MainPanel />
+      <SidePanel />
+      <SecondaryPanel />
     </Box>
   );
 };

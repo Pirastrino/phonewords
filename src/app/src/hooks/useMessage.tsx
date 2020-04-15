@@ -2,10 +2,11 @@ import create from 'zustand';
 
 type Message = {
   message: string;
-  filter: string[];
-  lastWord: RegExp;
+  index: number;
+  setFirst: boolean;
   switchWord: (newWord: string) => void;
   addChar: (char: string) => void;
+  addSingleChar: (char: string) => void;
   removeChar: () => void;
 };
 
@@ -13,24 +14,39 @@ const emojiReg = new RegExp(
   /(\u00a9 |\u00ae | [\u2000 -\u3300] |\ud83c[\ud000 -\udfff]|\ud83d[\ud000 -\udfff]|\ud83e[\ud000 -\udfff])*$/
 );
 
+const lastWordReg = new RegExp(/(\b[a-zA-Z]*)([^a-zA-Z]*$)/);
+
 const [useMessage] = create<Message>((set, get) => ({
   message: '',
-  filter: [],
-  lastWord: new RegExp(/(\b[a-zA-Z]*)([^a-zA-Z]*$)/),
+  index: 0,
+  setFirst: true,
   switchWord: (newWord) => {
-    const word: RegExpMatchArray | null = get().message.match(get().lastWord);
-    const prefix = word!.input!.slice(0, word!.index);
-    const suffix = word!.input!.slice(word!.index! + word![1].length);
-    set((_) => ({ message: [prefix, newWord, suffix].join('') }));
+    const message = get().message.slice(0, get().index);
+    const word = get().message.slice(get().index).match(lastWordReg);
+    const prefix = (word !== null && word.input!.slice(0, word.index)) || '';
+    const suffix =
+      (word !== null && word.input!.slice(word.index! + word![1].length)) || '';
+    set((_) => ({ message: [message, prefix, newWord, suffix].join('') }));
   },
-  addChar: (char) => set((state) => ({ message: state.message.concat(char) })),
+  addChar: (char) =>
+    set((state) => ({ message: state.message.concat(char), setFirst: true })),
+  addSingleChar: (char) =>
+    set((state) => ({
+      message: state.message.concat(char),
+      index: state.message.length,
+      setFirst: false,
+    })),
   removeChar: () => {
     const index =
       get().message.match(emojiReg) && get().message.match(emojiReg)![1]
         ? -2
         : -1;
-    set((state) => ({ message: state.message.slice(0, index) }));
+    set((state) => ({
+      message: state.message.slice(0, index),
+      index: 0,
+      setFirst: false,
+    }));
   },
 }));
 
-export { useMessage };
+export { useMessage, lastWordReg };
