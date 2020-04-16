@@ -4,15 +4,13 @@ const useLongPress = (
   callback: (e: MouseEvent | TouchEvent) => void,
   ms: number = 300
 ) => {
-  const timeout = useRef(null);
+  const timeout: React.MutableRefObject<any> = useRef(null);
 
   const start = useCallback(
-    //@ts-ignore
     (e) => (timeout.current = setTimeout(() => callback(e), ms)),
     [callback, ms]
   );
 
-  //@ts-ignore
   const stop = useCallback(() => clearInterval(timeout.current), []);
 
   return {

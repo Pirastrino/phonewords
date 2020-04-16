@@ -54,7 +54,9 @@ const SecondaryPanel: FC = () => {
       },
       btn__primary: {
         minWidth: `calc(100%/${
-          secondary && secondary !== ',?!' && secondary.length
+          secondary === ',?!'
+            ? secondary.length + 1
+            : secondary && secondary.length
         })`,
       },
     })
@@ -63,17 +65,18 @@ const SecondaryPanel: FC = () => {
   return (
     <Box className={styles.root}>
       {secondary &&
-        secondary !== ',?!' &&
         secondary !== 'emoji' &&
-        secondary.split('').map((c) => (
-          <Button
-            key={c}
-            className={`${styles.btn} ${styles.btn__primary}`}
-            onClick={() => addSingleChar(c)}
-          >
-            {c}
-          </Button>
-        ))}
+        ((secondary === ',?!' && secondary.concat('.')) || secondary)
+          .split('')
+          .map((c) => (
+            <Button
+              key={c}
+              className={`${styles.btn} ${styles.btn__primary}`}
+              onClick={() => addSingleChar(c)}
+            >
+              {c}
+            </Button>
+          ))}
       {((): string[] =>
         secondary === 'emoji'
           ? emoji

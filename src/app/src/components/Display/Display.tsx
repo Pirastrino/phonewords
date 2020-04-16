@@ -12,8 +12,10 @@ const Display = () => {
       root: {
         color: theme.palette.text.primary,
         flexGrow: 1,
+        fontSize: 20,
         backgroundColor: theme.palette.background.paper,
         whiteSpace: 'pre-wrap',
+        wordWrap: 'break-word',
 
         '& > p': {
           margin: 0,
@@ -34,7 +36,7 @@ const Display = () => {
   )();
 
   return (
-    <Box p={2} className={styles.root}>
+    <Box p={3} className={styles.root}>
       <p>
         {message}
         <span className={styles.cursor}></span>

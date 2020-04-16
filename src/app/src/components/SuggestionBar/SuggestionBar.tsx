@@ -20,7 +20,14 @@ const getWords = gql`
 `;
 
 const SuggestionBar: FC = () => {
-  const { message, index, setFirst, switchWord } = useMessage();
+  const {
+    message,
+    index,
+    transform,
+    setFirst,
+    switchWord,
+    textTransform,
+  } = useMessage();
   const { secondary, setSecondary } = useKeyboard();
   const word =
     (message.slice(index).match(lastWordReg) &&
@@ -34,11 +41,12 @@ const SuggestionBar: FC = () => {
   });
 
   useMemo(() => {
-    get(data, 'words[0].lemma') &&
+    !loading &&
+      get(data, 'words[0].lemma') &&
       message.length > 0 &&
       setFirst &&
-      switchWord(get(data, 'words[0].lemma'));
-  }, [data]);
+      switchWord(textTransform(get(data, 'words[0].lemma')));
+  }, [data, transform]);
 
   const styles = makeStyles((theme: Theme) =>
     createStyles({
@@ -68,7 +76,7 @@ const SuggestionBar: FC = () => {
   });
 
   const handleChange = (e: ChangeEvent<{}>, newValue: string) =>
-    switchWord(newValue);
+    switchWord(textTransform(newValue));
 
   return (
     <Box className={styles.root}>
@@ -78,7 +86,7 @@ const SuggestionBar: FC = () => {
         </Button>
       ) : (
         <Tabs
-          value={word}
+          value={word.toLowerCase()}
           onChange={handleChange}
           textColor="primary"
           variant="scrollable"
@@ -91,7 +99,7 @@ const SuggestionBar: FC = () => {
               <WordTab
                 key={k}
                 value={w.lemma}
-                label={w.lemma}
+                label={textTransform(w.lemma)}
                 {...a11yProps(k)}
               />
             ))}

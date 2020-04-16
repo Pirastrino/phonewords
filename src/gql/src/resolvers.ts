@@ -11,6 +11,7 @@ const resolvers = {
       const { base } = args;
       const groups = ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxzy'];
       const regexMap = base
+        .toLowerCase()
         .split('')
         .map((c) => `[${groups.filter((g: string) => g.includes(c))[0]}]`);
       const regex = new RegExp(`^${regexMap.join('')}$`);
@@ -21,7 +22,7 @@ const resolvers = {
             words
               .get(key)
               ?.filter((w: string) => w.match(regex))
-              .concat(base)
+              .concat(base.toLowerCase())
           ),
         ].map((w: string) => ({ lemma: w })) || []
       );

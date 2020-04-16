@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Space from '@material-ui/icons/SpaceBar';
 import Cpsl from '@material-ui/icons/KeyboardCapslock';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import { useKeyboard } from '../../../hooks/useKeyboard';
 import { useMessage } from '../../../hooks/useMessage';
@@ -17,7 +18,7 @@ interface Button {
 
 const MainPanel: FC = () => {
   const { setSecondary, numpad, secondary } = useKeyboard();
-  const { addChar } = useMessage();
+  const { addChar, transform, setTransform } = useMessage();
 
   // CSS
   const styles = makeStyles((theme: Theme) =>
@@ -42,6 +43,9 @@ const MainPanel: FC = () => {
       hidden: {
         display: 'none',
       },
+      uppercase: {
+        color: `${transform === 2 ? theme.palette.secondary.main : 'inherit'}`,
+      },
     })
   )();
 
@@ -59,8 +63,8 @@ const MainPanel: FC = () => {
     [
       10,
       {
-        value: <Cpsl />,
-        handleClick: (e: MouseEvent) => console.log(e),
+        value: transform === 0 ? <KeyboardArrowUpIcon /> : <Cpsl />,
+        handleClick: (e: MouseEvent) => setTransform(),
       },
     ],
     [0, { value: '0' }],
@@ -86,7 +90,9 @@ const MainPanel: FC = () => {
               ))
           }
           {...useLongPress(() => btn.name && setSecondary(btn.name))}
-          className={key === 0 && !numpad ? styles.hidden : styles.btn}
+          className={`${key === 10 && transform === 2 && styles.uppercase} ${
+            key === 0 && !numpad ? styles.hidden : styles.btn
+          }`}
         >
           {(!numpad && btn.name) || btn.value}
         </Button>

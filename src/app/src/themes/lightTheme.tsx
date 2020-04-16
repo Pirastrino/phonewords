@@ -9,6 +9,9 @@ const lightTheme = createMuiTheme({
       main: '#E98305',
     },
   },
+  typography: {
+    fontSize: 18,
+  },
 });
 
 export { lightTheme };
